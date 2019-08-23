@@ -1,3 +1,5 @@
+import java.util.ArrayList;
+import java.util.List;
 import java.util.Scanner;
 
 public class Duke {
@@ -9,6 +11,7 @@ public class Duke {
             + "|____/ \\__,_|_|\\_\\___|\n";
 
     private final static String LINE = "________________________________________________";
+    private static List user_list = new ArrayList<String>();
 
     // Main
     public static void main(String[] args) {
@@ -20,7 +23,7 @@ public class Duke {
     private static void initialise() {
         // Welcome Message
         System.out.println("Hello from the other sideeeeeeeeeeee\n" + LOGO); // Logo
-        System.out.println("Duke: Hello! I'm Duke.\nDuke: What can I do for you?");
+        dukeSays("Hello! I'm Duke.\nDuke: What can I do for you?");
         printSeparator();
         // Begin taking in input
         Scanner scanner = new Scanner(System.in);
@@ -29,15 +32,37 @@ public class Duke {
             System.out.print("User: ");
             user_input = scanner.nextLine();
             if (user_input.equals("bye")) { // Only exit if user sends "bye" in lowercase
-                System.out.println("Duke: Bye. Hope to see you again soon!");
+                dukeSays("Bye. Hope to see you again soon!");
                 break;
-            } else { // Echo input
-                System.out.println("Duke: " + user_input +"\n");
+            } else { // Do something with user_input
+                recordUser(user_input);
             }
         }
         printSeparator();
     }
 
+    // Level 2 - Adds input to the list. If user requests "list", returns the entire list
+    private static void recordUser(String user_input) {
+        if (user_input.equals("list")) {
+            dukeSays("Here's you're list!");
+            for (int index = 0; index < user_list.size(); ++index) {
+                System.out.println((index + 1) + ". " + user_list.get(index));
+            }
+            printSeparator();
+        } else {
+            dukeSays("I've added \"" + user_input + "\" to your private list.");
+            user_list.add(user_input);
+        }
+    }
+
+    // Level 1 - Prints user_input as though Duke is responding
+    private static void echoUser(String user_input) {
+        dukeSays(user_input);
+    }
+
+    private static void dukeSays(String string_x) {
+        System.out.println("Duke: " + string_x + "\n");
+    }
     // Prints out a standardized line separator
     private static void printSeparator() {
         System.out.println(LINE);
