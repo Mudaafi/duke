@@ -11,7 +11,7 @@ public class Duke {
             + "|____/ \\__,_|_|\\_\\___|\n";
 
     private static final String LINE = "________________________________________________";
-    private static List user_list = new ArrayList<String>();
+    private static List<Task> user_list = new ArrayList<Task>();
 
     // Main
     public static void main(String[] args) {
@@ -43,15 +43,25 @@ public class Duke {
 
     // Level 2 - Adds input to the list. If user requests "list", returns the entire list
     private static void recordUser(String userInput) {
-        if (userInput.equals("list")) {
+        if (userInput.toLowerCase().equals("list")) {
             dukeSays("Here's you're list!");
             for (int index = 0; index < user_list.size(); ++index) {
-                System.out.println((index + 1) + ". " + user_list.get(index));
+                System.out.println((index + 1) + ". [" + user_list.get(index).getStatusIcon()
+				+ "] " + user_list.get(index).taskName);
             }
             printSeparator();
+	} else if (userInput.toLowerCase().contains("done")) {
+	    try {
+	        int index = Integer.valueOf(userInput.replace("done", "").trim()) - 1;
+		user_list.get(index).markDone();
+		dukeSays("Alrighty, I've marked task '" + String.valueOf(index + 1) + ". " + user_list.get(index).taskName + "' as done!");
+	    } catch (Exception e) {
+		dukeSays("Invalid 'done' statement. Please indicate the index of the task you wish to mark done.");
+	    }
         } else {
+	    Task newTask = new Task(userInput);
+            user_list.add(newTask);
             dukeSays("I've added \"" + userInput + "\" to your private list.");
-            user_list.add(userInput);
         }
     }
 
