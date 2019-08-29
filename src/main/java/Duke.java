@@ -1,10 +1,11 @@
 import java.util.ArrayList;
 import java.util.List;
 import java.util.Scanner;
+import java.io.FileWriter;
+import java.io.File;
 
 public class Duke {
     private static final String LOGO =
-
               " ____        _        \n"
             + "|  _ \\ _   _| | _____ \n"
             + "| | | | | | | |/ / _ \\\n"
@@ -17,7 +18,58 @@ public class Duke {
 
     // Main
     public static void main(String[] args) {
+	loadData();
         initialise();
+	saveData();
+    }
+
+    // Load saved Data
+    public static void loadData() {
+	try {
+	    File file = new File("savedData.txt");
+	    Scanner scanner = new Scanner(file);
+	    while (scanner.hasNextLine()) {
+	        try {
+	     	    String values[] = scanner.nextLine().split("@|@", 2);
+		    Task newTask = createTask(values[0]);
+		    if (Boolean.valueOf(values[1])) {
+		        newTask.markDone();
+		    }
+		    taskList.add(newTask);
+	        } catch (Exception e) {
+		    System.out.println(e);
+	        }
+	    }
+	} catch (Exception e) {
+	    System.out.println("No previously saved Data.");
+	}
+    }
+
+    // Save Current Data
+    public static void saveData() {
+	try {
+	    FileWriter writer = new FileWriter("savedData.txt");
+	    for (Task task : taskList) {
+		String strSave = "";
+		strSave += task.typeMap.get(task.type) + " "
+				+ task.taskName;
+		if (task.detailDesc != null && task.taskDetails != null) {
+		    strSave += '/';
+		}
+		if (task.detailDesc != null) {
+		    strSave += task.detailDesc;
+		}
+		strSave += " ";
+		if (task.taskDetails != null) {
+		    strSave += task.taskDetails;
+		}
+		strSave += "@|@" + task.isDone.toString() + "\n";
+		writer.write(strSave);
+	    }
+	    writer.close();
+	} catch (Exception e) {
+	    System.out.println(e);
+	}
     }
 
     // Method that is supposed to run when program is launched.
