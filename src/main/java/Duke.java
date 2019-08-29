@@ -4,6 +4,7 @@ import java.util.Scanner;
 
 public class Duke {
     private static final String LOGO =
+
               " ____        _        \n"
             + "|  _ \\ _   _| | _____ \n"
             + "| | | | | | | |/ / _ \\\n"
@@ -79,7 +80,7 @@ public class Duke {
     private static void printSeparator() {
         System.out.println(LINE);
     }
-
+  
     // TO-DO: Think about how this can be neater
     // Interface for class selection
     public static Task createTask(String userInput) {
