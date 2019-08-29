@@ -44,11 +44,11 @@ public class Task {
 		+ this.type + "] " + this.taskName;
 	}
 	if (this.detailDesc != null || this.taskDetails != null) {
-	    generatedStr += "(";
-	    if (!this.detailDesc.isEmpty()) {
+	    generatedStr += " (";
+	    if (this.detailDesc != null && !this.detailDesc.isEmpty()) {
 		generatedStr += this.detailDesc + ": ";
 	    }
-	    if (!this.taskDetails.isEmpty()) {
+	    if (this.taskDetails != null && !this.taskDetails.isEmpty()) {
 		generatedStr += this.taskDetails;
 	    }
 	    generatedStr += ")";
@@ -60,13 +60,16 @@ public class Task {
     protected void recordTaskDetails(String name) {
 	//(?i) is regex which tells Java to be case-Insensitive
         name = name.replaceFirst("(?i)" + this.typeMap.get(this.type), "").trim();
+	this.taskName = name;
 	int indexBackslash = name.indexOf('/');
 	//Check if '/' exists
 	if (indexBackslash >= 0) {
-	    this.detailDesc = name.substring(indexBackslash + 1, name.indexOf(' ', indexBackslash));
+	    this.detailDesc = name.substring(indexBackslash + 1, name.indexOf(' ', indexBackslash)).trim();
 	    String splitDetails[] = name.split('/' + this.detailDesc, 2);
-	    this.taskName = splitDetails[0];
-            this.taskDetails = splitDetails[1].trim();
+	    this.taskName = splitDetails[0].trim();
+	    if (splitDetails.length > 1) {
+                this.taskDetails = splitDetails[1].trim();
+	    }
 	}
     }
 }
