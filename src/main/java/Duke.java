@@ -4,14 +4,15 @@ import java.util.Scanner;
 
 public class Duke {
     private static final String LOGO =
-            " ____        _        \n"
+              " ____        _        \n"
             + "|  _ \\ _   _| | _____ \n"
             + "| | | | | | | |/ / _ \\\n"
             + "| |_| | |_| |   <  __/\n"
             + "|____/ \\__,_|_|\\_\\___|\n";
 
     private static final String LINE = "________________________________________________";
-    private static List<Task> user_list = new ArrayList<Task>();
+    private static List<Task> taskList = new ArrayList<Task>();
+    private static final String TASK_TYPES[] = {"deadline", "todo", "event"};
 
     // Main
     public static void main(String[] args) {
@@ -31,7 +32,7 @@ public class Duke {
         while (true) {
             System.out.print("User: ");
             userInput = scanner.nextLine();
-            if (userInput.equals("bye")) { // Only exit if user sends "bye" in lowercase
+            if (userInput.toLowerCase().equals("bye")) { // Only exit if user sends "bye" in lowercase
                 dukeSays("Bye. Hope to see you again soon!");
                 break;
             } else { // Do something with userInput
@@ -45,23 +46,23 @@ public class Duke {
     private static void recordUser(String userInput) {
         if (userInput.toLowerCase().equals("list")) {
             dukeSays("Here's you're list!");
-            for (int index = 0; index < user_list.size(); ++index) {
-                System.out.println((index + 1) + ". [" + user_list.get(index).getStatusIcon()
-				+ "] " + user_list.get(index).taskName);
+            for (int index = 0; index < taskList.size(); ++index) {
+                System.out.println((index + 1) + ". " 
+				+ taskList.get(index).genTaskDesc());
             }
             printSeparator();
 	} else if (userInput.toLowerCase().contains("done")) {
 	    try {
 	        int index = Integer.valueOf(userInput.replace("done", "").trim()) - 1;
-		user_list.get(index).markDone();
-		dukeSays("Alrighty, I've marked task '" + String.valueOf(index + 1) + ". " + user_list.get(index).taskName + "' as done!");
+		taskList.get(index).markDone();
+		dukeSays("Alrighty, I've marked task '" + String.valueOf(index + 1) + ". " + taskList.get(index).taskName + "' as done!");
 	    } catch (Exception e) {
 		dukeSays("Invalid 'done' statement. Please indicate the index of the task you wish to mark done.");
 	    }
         } else {
-	    Task newTask = new Task(userInput);
-            user_list.add(newTask);
-            dukeSays("I've added \"" + userInput + "\" to your private list.");
+	    Task newTask = createTask(userInput);
+    	    taskList.add(newTask);
+            dukeSays("I've added \"" + newTask.genTaskDesc() + "\" to your private list.");
         }
     }
 
@@ -77,5 +78,31 @@ public class Duke {
     // Prints out a standardized line separator
     private static void printSeparator() {
         System.out.println(LINE);
+    }
+
+    // TO-DO: Think about how this can be neater
+    // Interface for class selection
+    public static Task createTask(String userInput) {
+	Task newTask;
+	int minIndex = 999;
+	int testIndex;
+	String type = "";
+	for (String typeIter : TASK_TYPES) {
+	    testIndex = userInput.toLowerCase().indexOf(typeIter);
+	    if (minIndex > testIndex && testIndex >= 0) {
+		type = typeIter;
+		minIndex = testIndex;
+	    }
+	}
+	if (type == "deadline") {
+	    newTask = new Deadline(userInput);
+	} else if (type == "event") {
+	    newTask = new Event(userInput);
+	} else if (type == "todo") {
+	    newTask = new ToDo(userInput);
+	} else {
+	    newTask = new Task(userInput);
+	}
+	return newTask;
     }
 }
