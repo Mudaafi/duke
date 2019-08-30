@@ -6,70 +6,78 @@ import java.io.File;
 
 public class Duke {
     private static final String LOGO =
-              " ____        _        \n"
-            + "|  _ \\ _   _| | _____ \n"
-            + "| | | | | | | |/ / _ \\\n"
-            + "| |_| | |_| |   <  __/\n"
-            + "|____/ \\__,_|_|\\_\\___|\n";
+            " ____        _        \n"
+                    + "|  _ \\ _   _| | _____ \n"
+                    + "| | | | | | | |/ / _ \\\n"
+                    + "| |_| | |_| |   <  __/\n"
+                    + "|____/ \\__,_|_|\\_\\___|\n";
 
     private static final String LINE = "________________________________________________";
     private static List<Task> taskList = new ArrayList<Task>();
-    private static final String TASK_TYPES[] = {"deadline", "todo", "event"};
+    private static final String[] TASK_TYPES = {"deadline", "todo", "event"};
 
-    // Main
+    /**
+     * The Main method by which Duke will be launched.
+     */
     public static void main(String[] args) {
-	loadData();
+        loadData("savedData.txt");
         initialise();
-	saveData();
+        saveData("savedData.txt");
     }
 
-    // Load saved Data
-    public static void loadData() {
-	try {
-	    File file = new File("savedData.txt");
-	    Scanner scanner = new Scanner(file);
-	    while (scanner.hasNextLine()) {
-	        try {
-	     	    String values[] = scanner.nextLine().split("@|@", 2);
-		    Task newTask = createTask(values[0]);
-		    if (Boolean.valueOf(values[1])) {
-		        newTask.markDone();
-		    }
-		    taskList.add(newTask);
-	        } catch (Exception e) {
-		    System.out.println(e);
-	        }
-	    }
-	} catch (Exception e) {
-	    System.out.println("No previously saved Data.");
-	}
+    /**
+     * This method loads saved data from the previous instance of Duke.
+     * @param pathName - String that details the full path of a .txt file
+     */
+    public static void loadData(String pathName) {
+        try {
+            File file = new File(pathName);
+            Scanner scanner = new Scanner(file);
+            while (scanner.hasNextLine()) {
+                try {
+                    String[] values = scanner.nextLine().split("@|@", 2);
+                    Task newTask = createTask(values[0]);
+                    if (Boolean.valueOf(values[1])) {
+                        newTask.markDone();
+                    }
+                    taskList.add(newTask);
+                } catch (Exception e) {
+                    System.out.println(e);
+                }
+            }
+        } catch (Exception e) {
+            System.out.println("No previously saved Data.");
+        }
     }
 
-    // Save Current Data
-    public static void saveData() {
-	try {
-	    FileWriter writer = new FileWriter("savedData.txt");
-	    for (Task task : taskList) {
-		String strSave = "";
-		strSave += task.typeMap.get(task.type) + " "
-				+ task.taskName;
-		if (task.detailDesc != null && task.taskDetails != null) {
-		    strSave += '/';
-		}
-		if (task.detailDesc != null) {
-		    strSave += task.detailDesc;
-		}
-		strSave += " ";
-		if (task.taskDetails != null) {
-		    strSave += task.taskDetails;
-		}
-		strSave += "@|@" + task.isDone.toString() + "\n";
-		writer.write(strSave);
-	    }
-	    writer.close();
-	} catch (Exception e) {
-	    System.out.println(e);
-	}
+    /**
+     * This method saves the Tasks stored in .taskList for future use.
+     * @param pathName - String that details the full path of a .txt file
+     */
+    public static void saveData(String pathName) {
+        try {
+            FileWriter writer = new FileWriter(pathName);
+            for (Task task : taskList) {
+                String strSave = "";
+                strSave += task.typeMap.get(task.type) + " "
+                        + task.taskName;
+                if (task.detailDesc != null && task.taskDetails != null) {
+                    strSave += '/';
+                }
+                if (task.detailDesc != null) {
+                    strSave += task.detailDesc;
+                }
+                strSave += " ";
+                if (task.taskDetails != null) {
+                    strSave += task.taskDetails;
+                }
+                strSave += "@|@" + task.isDone.toString() + "\n";
+                writer.write(strSave);
+            }
+            writer.close();
+        } catch (Exception e) {
+            System.out.println(e);
+        }
     }
 
     // Method that is supposed to run when program is launched.
@@ -100,21 +108,22 @@ public class Duke {
         if (userInput.toLowerCase().equals("list")) {
             dukeSays("Here's you're list!");
             for (int index = 0; index < taskList.size(); ++index) {
-                System.out.println((index + 1) + ". " 
-				+ taskList.get(index).genTaskDesc());
+                System.out.println((index + 1) + ". "
+                        + taskList.get(index).genTaskDesc());
             }
             printSeparator();
-	} else if (userInput.toLowerCase().contains("done")) {
-	    try {
-	        int index = Integer.valueOf(userInput.replace("done", "").trim()) - 1;
-		taskList.get(index).markDone();
-		dukeSays("Alrighty, I've marked task '" + String.valueOf(index + 1) + ". " + taskList.get(index).taskName + "' as done!");
-	    } catch (Exception e) {
-		dukeSays("Invalid 'done' statement. Please indicate the index of the task you wish to mark done.");
-	    }
+        } else if (userInput.toLowerCase().contains("done")) {
+            try {
+                int index = Integer.valueOf(userInput.replace("done", "").trim()) - 1;
+                taskList.get(index).markDone();
+                dukeSays("Alrighty, I've marked task '" + String.valueOf(index + 1)
+                    + ". " + taskList.get(index).taskName + "' as done!");
+            } catch (Exception e) {
+                dukeSays("Invalid 'done' statement. Please indicate the index of the task you wish to mark done.");
+            }
         } else {
-	    Task newTask = createTask(userInput);
-    	    taskList.add(newTask);
+            Task newTask = createTask(userInput);
+            taskList.add(newTask);
             dukeSays("I've added \"" + newTask.genTaskDesc() + "\" to your private list.");
         }
     }
@@ -132,30 +141,34 @@ public class Duke {
     private static void printSeparator() {
         System.out.println(LINE);
     }
-  
-    // TO-DO: Think about how this can be neater
-    // Interface for class selection
+
+    /**
+     * Interface for class selection: Creates a class based on the user's input.
+     * TO-DO: Think about how this can be neater
+     * @param userInput The input that the user types in from the command line
+     * @return Specific Task Object based on user's input. Default: Task
+     */
     public static Task createTask(String userInput) {
-	Task newTask;
-	int minIndex = 999;
-	int testIndex;
-	String type = "";
-	for (String typeIter : TASK_TYPES) {
-	    testIndex = userInput.toLowerCase().indexOf(typeIter);
-	    if (minIndex > testIndex && testIndex >= 0) {
-		type = typeIter;
-		minIndex = testIndex;
-	    }
-	}
-	if (type == "deadline") {
-	    newTask = new Deadline(userInput);
-	} else if (type == "event") {
-	    newTask = new Event(userInput);
-	} else if (type == "todo") {
-	    newTask = new ToDo(userInput);
-	} else {
-	    newTask = new Task(userInput);
-	}
-	return newTask;
+        Task newTask;
+        int minIndex = 999;
+        int testIndex;
+        String type = "";
+        for (String typeIter : TASK_TYPES) {
+            testIndex = userInput.toLowerCase().indexOf(typeIter);
+            if (minIndex > testIndex && testIndex >= 0) {
+                type = typeIter;
+                minIndex = testIndex;
+            }
+        }
+        if (type == "deadline") {
+            newTask = new Deadline(userInput);
+        } else if (type == "event") {
+            newTask = new Event(userInput);
+        } else if (type == "todo") {
+            newTask = new ToDo(userInput);
+        } else {
+            newTask = new Task(userInput);
+        }
+        return newTask;
     }
 }

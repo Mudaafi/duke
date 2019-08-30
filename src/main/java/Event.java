@@ -1,8 +1,8 @@
-public class Event extends Task {
+class Event extends Task {
     // Initialization
-    public Event(String name) {
-	super(name);
-	this.type = "E";
-	this.recordTaskDetails(name);
+    Event(String name) {
+        super(name);
+        this.type = "E";
+        this.recordTaskDetails(name);
     }
 }
