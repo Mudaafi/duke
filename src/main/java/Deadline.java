@@ -14,6 +14,9 @@ class Deadline extends Task {
 
     private void parseDateTime() {
         SimpleDateFormat formatx = new SimpleDateFormat("dd/mm/yyyy HHmm");
+	if (this.detailDesc == null) {
+		return;
+	}
         if (this.detailDesc.equals("by")) {
             try {
                 this.datetime = formatx.parse(this.taskDetails);
