@@ -6,7 +6,7 @@ import java.io.File;
 
 public class Duke {
     private static final String LOGO =
-            " ____        _        \n"
+                      " ____        _        \n"
                     + "|  _ \\ _   _| | _____ \n"
                     + "| | | | | | | |/ / _ \\\n"
                     + "| |_| | |_| |   <  __/\n"
@@ -45,6 +45,8 @@ public class Duke {
                     System.out.println(e);
                 }
             }
+	    dukeSays(String.valueOf(taskList.size()) + " Tasks loaded from Memory");
+	    Scanner.close();
         } catch (Exception e) {
             System.out.println("No previously saved Data.");
         }
@@ -84,7 +86,8 @@ public class Duke {
     // Prints out Logo, Welcome msg, and echoes user input until user_input=="bye", which terminates the method.
     private static void initialise() {
         // Welcome Message
-        System.out.println("Hello from the other sideeeeeeeeeeee\n" + LOGO); // Logo
+	printSeparator();
+        System.out.println(LOGO); // Logo
         dukeSays("Hello! I'm Duke.\nDuke: What can I do for you?");
         printSeparator();
         // Begin taking in input
@@ -105,26 +108,41 @@ public class Duke {
 
     // Level 2 - Adds input to the list. If user requests "list", returns the entire list
     private static void recordUser(String userInput) {
+	if (userInput.split(" ").length < 1) {
+	    return;
+	}
         if (userInput.toLowerCase().equals("list")) {
-            dukeSays("Here's you're list!");
+            dukeSays("You have (" + String.valueOf(taskList.size()) + 
+			    ") Tasks in your list!");
             for (int index = 0; index < taskList.size(); ++index) {
                 System.out.println((index + 1) + ". "
                         + taskList.get(index).genTaskDesc());
             }
             printSeparator();
-        } else if (userInput.toLowerCase().contains("done")) {
+        } else if (userInput.split(" ")[0].toLowerCase().contains("done")) {
             try {
                 int index = Integer.valueOf(userInput.replace("done", "").trim()) - 1;
                 taskList.get(index).markDone();
                 dukeSays("Alrighty, I've marked task '" + String.valueOf(index + 1)
-                    + ". " + taskList.get(index).taskName + "' as done!");
+                    + ") " + taskList.get(index).taskName + "' as done!");
             } catch (Exception e) {
                 dukeSays("Invalid 'done' statement. Please indicate the index of the task you wish to mark done.");
+            }
+
+        } else if (userInput.split(" ")[0].toLowerCase().contains("delete")) {
+            try {
+                int index = Integer.valueOf(userInput.replace("delete", "").trim()) - 1;
+                dukeSays("Task '" + String.valueOf(index + 1)
+                    + ") " + taskList.get(index).taskName + "' deleted");
+                taskList.remove(index);
+            } catch (Exception e) {
+                dukeSays("Invalid 'delete' statement. Please indicate the index of the task you wish to mark delete.");
             }
         } else {
             Task newTask = createTask(userInput);
             taskList.add(newTask);
-            dukeSays("I've added \"" + newTask.genTaskDesc() + "\" to your private list.");
+            dukeSays("I've added \"" + newTask.genTaskDesc() + "\" to your private list(" +
+			    String.valueOf(taskList.size()) + ").");
         }
     }
 
