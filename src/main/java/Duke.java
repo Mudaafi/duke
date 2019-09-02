@@ -121,6 +121,9 @@ public class Duke {
             } catch (Exception e) {
                 dukeSays("Invalid 'done' statement. Please indicate the index of the task you wish to mark done.");
             }
+	} else if (userInput.split(" ")[0].toLowerCase().contains("find")) {
+	    userInput = userInput.replace("find", "").trim();
+	    findTasks(userInput);
         } else {
             Task newTask = createTask(userInput);
             taskList.add(newTask);
@@ -170,5 +173,34 @@ public class Duke {
             newTask = new Task(userInput);
         }
         return newTask;
+    }
+
+    /**
+     * Prints tasks from Duke.taskList based on the index provided.
+     * @param ...index Varargs The indexes of tasks from taskList to be printed.
+     */
+    public static void printTaskByIndex(int ...indexes) {
+	for (int index : indexes) {
+	    System.out.println(String.valueOf(index + 1) + ". " 
+			    + taskList.get(index).genTaskDesc());
+	}
+    }
+
+    /**
+     * Finds and prints each task that contains the string.
+     * @param name The substring to be found
+     */
+    public static void findTasks(String name) {
+	dukeSays("Here are the Tasks matching your query '" + name + "'.");
+	for (int index = 0; index < taskList.size(); ++index) {
+	    try {
+		if(taskList.get(index).taskName.contains(name)) {
+		    printTaskByIndex(index);
+		}
+	    } catch (Exception e) {
+		System.out.println("Read invalid taskName");
+	    }
+	}
+	printSeparator();
     }
 }
