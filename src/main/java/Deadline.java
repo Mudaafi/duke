@@ -22,7 +22,7 @@ class Deadline extends Task {
                 this.datetime = formatx.parse(this.taskDetails);
                 System.out.println("Date Interpreted: " + formatx.format(this.datetime));
             } catch (Exception e) {
-                System.out.println("Invalid Input. Unable to interpret Datetime");
+                System.out.println("Invalid Input. Unable to interpret Datetime (use: dd/mm/yyyy HHmm)");
                 this.datetime = new Date();
             }
         }

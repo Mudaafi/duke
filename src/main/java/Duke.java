@@ -35,8 +35,11 @@ public class Duke {
             Scanner scanner = new Scanner(file);
             while (scanner.hasNextLine()) {
                 try {
-                    String[] values = scanner.nextLine().split("@|@", 2);
+		    String separator = "@|@";
+                    String[] values = scanner.nextLine().split(separator, 2);
                     Task newTask = createTask(values[0]);
+		    separator = separator.substring(1);
+		    values[1] = values[1].replace(separator, "").trim();
                     if (Boolean.valueOf(values[1])) {
                         newTask.markDone();
                     }
@@ -46,7 +49,6 @@ public class Duke {
                 }
             }
 	    dukeSays(String.valueOf(taskList.size()) + " Tasks loaded from Memory");
-	    Scanner.close();
         } catch (Exception e) {
             System.out.println("No previously saved Data.");
         }
