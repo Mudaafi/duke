@@ -1,25 +1,19 @@
 import java.util.HashMap;
 
 public class Task {
-    protected String type = "P";
     protected String taskName;
     protected String taskDetails;
     protected String detailDesc;
+    protected TaskType taskType;
     protected Boolean isDone = false;
-    protected HashMap<String, String> typeMap = new HashMap<String, String>();
-    protected static int taskCounter = 0;
 
     /**
      * Constructor for the 'Task' Class.
      * @param name Name of the task as inputted by the user
      */
     public Task(String name) {
-        this.taskCounter += 1;
-        this.taskName = name.replace("Parent Task Class", "").trim();
-        this.typeMap.put("P", "Parent Task Class");
-        this.typeMap.put("T", "ToDo");
-        this.typeMap.put("D", "Deadline");
-        this.typeMap.put("E", "Event");
+	this.taskType = TaskType.PARENT;
+        this.taskName = name.replace(this.taskType.name(), "").trim();
     }
 
     /**
@@ -56,9 +50,14 @@ public class Task {
     public String genTaskDesc() {
         String generatedStr = "";
         if (!this.taskName.isEmpty()) {
-            generatedStr += "[" + this.getStatusIcon() + "]" + "["
-                    + this.type + "] " + this.taskName;
-        }
+            generatedStr += "[" 
+		    + this.getStatusIcon() 
+		    + "]" 
+		    + "[" 
+		    + this.genTypeAcronym()
+		    + "] " 
+		    + this.taskName; 
+	}
         if (this.detailDesc != null || this.taskDetails != null) {
             generatedStr += " (";
             if (this.detailDesc != null && !this.detailDesc.isEmpty()) {
@@ -72,10 +71,13 @@ public class Task {
         return generatedStr;
     }
 
+    public String genTypeAcronym() {
+	return this.taskType.name().substring(0,1);
+    }
+
     // Record Task Details
     protected void recordTaskDetails(String name) {
-        //(?i) is regex which tells Java to be case-Insensitive
-        name = name.replaceFirst("(?i)" + this.typeMap.get(this.type), "").trim();
+        name = Parser.removeStr(this.taskType.name(), name);
         this.taskName = name;
         int indexBackslash = name.indexOf('/');
         //Check if '/' exists

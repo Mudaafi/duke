@@ -7,7 +7,7 @@ class Deadline extends Task {
     // Initialization
     Deadline(String name) {
         super(name);
-        this.type = "D";
+	this.taskType = TaskType.DEADLINE;
         this.recordTaskDetails(name);
         this.parseDateTime();
     }
