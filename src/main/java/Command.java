@@ -6,13 +6,14 @@ abstract class Command {
     }
 
     /**
-     * Returns True if the command requests for the Ui to exit
+     * Returns True if the command requests for the Ui to exit.
+     *
      * @return Boolean
      */
     public Boolean getExitRequest() {
-	return exitRequest;
+        return exitRequest;
     }
-    
+
     /**
      * Executes a particular Command.
      */

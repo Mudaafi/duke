@@ -9,17 +9,19 @@ public class Task {
 
     /**
      * Constructor for the 'Task' Class.
+     *
      * @param name Name of the task as inputted by the user
      */
     public Task(String name) {
-	this.taskType = TaskType.PARENT;
+        this.taskType = TaskType.PARENT;
         this.taskName = name.replace(this.taskType.name(), "").trim();
     }
 
     /**
      * Get a 'tick' or 'cross' depending on .isDone
+     *
      * @return A special string that represents a tick for true or a cross for false
-      */
+     */
     public String getStatusIcon() {
         if (this.isDone) {
             return "✓"; // / u2713
@@ -45,19 +47,20 @@ public class Task {
     /**
      * Generates a String Describing the Task Object.
      * Optimized for user's reading.
+     *
      * @return String detailing the Task Object, including type, isDone, taskName and taskDetails
      */
     public String genTaskDesc() {
         String generatedStr = "";
         if (!this.taskName.isEmpty()) {
-            generatedStr += "[" 
-		    + this.getStatusIcon() 
-		    + "]" 
-		    + "[" 
-		    + this.genTypeAcronym()
-		    + "] " 
-		    + this.taskName; 
-	}
+            generatedStr += "["
+                    + this.getStatusIcon()
+                    + "]"
+                    + "["
+                    + this.genTypeAcronym()
+                    + "] "
+                    + this.taskName;
+        }
         if (this.detailDesc != null || this.taskDetails != null) {
             generatedStr += " (";
             if (this.detailDesc != null && !this.detailDesc.isEmpty()) {
@@ -72,7 +75,7 @@ public class Task {
     }
 
     public String genTypeAcronym() {
-	return this.taskType.name().substring(0,1);
+        return this.taskType.name().substring(0, 1);
     }
 
     // Record Task Details

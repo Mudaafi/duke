@@ -3,6 +3,6 @@ class ToDo extends Task {
     ToDo(String name) {
         super(name);
         this.taskType = TaskType.TODO;
-	this.recordTaskDetails(name);
+        this.recordTaskDetails(name);
     }
 }

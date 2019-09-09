@@ -8,6 +8,6 @@ class CommandBlank extends Command {
      */
     @Override
     public void execute(TaskList taskList) {
-	Ui.printSeparator();
+        Ui.printSeparator();
     }
 }

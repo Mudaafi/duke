@@ -7,7 +7,7 @@ class Ui {
     protected Boolean exitRequest;
     protected List<String> userInputHistory;
     public static final String LOGO =
-                      " ____        _        \n"
+            " ____        _        \n"
                     + "|  _ \\ _   _| | _____ \n"
                     + "| | | | | | | |/ / _ \\\n"
                     + "| |_| | |_| |   <  __/\n"
@@ -19,58 +19,58 @@ class Ui {
      * Constructor for the 'Ui' Class.
      */
     public Ui() {
-	this.scanner = new Scanner(System.in);
-	this.exitRequest = false;
-	this.userInputHistory = new ArrayList<String>();
+        this.scanner = new Scanner(System.in);
+        this.exitRequest = false;
+        this.userInputHistory = new ArrayList<String>();
     }
 
     /**
      * Method to start the Ui.
      */
     public void initialise(TaskList taskList) {
-	printWelcomeMsg();
-	while (!this.exitRequest) {
-	    this.interact(taskList);
-	}
-	this.exitUi();
+        printWelcomeMsg();
+        while (!this.exitRequest) {
+            this.interact(taskList);
+        }
+        this.exitUi();
     }
 
     /**
-     * Obtains user input and executes commands
+     * Obtains user input and executes commands.
+     *
      * @return Command to be executed
      */
     public void interact(TaskList taskList) {
-	// Declarations
-	String userInput;
-	CommandType commandType;
-	Command command;
-	// Function Calls
-	userInput = this.scanInput();
-	command = Parser.parse(userInput);
-	command.execute(taskList);
-	this.exitRequest = command.getExitRequest();
+        // Declarations
+        String userInput;
+        CommandType commandType;
+        Command command;
+        // Function Calls
+        userInput = this.scanInput();
+        command = Parser.parse(userInput);
+        command.execute(taskList);
+        this.exitRequest = command.getExitRequest();
     }
-	    
+
     /**
-     * Scans the CLI for User Input
+     * Scans the CLI for User Input.
+     *
      * @return String representing the User Input
      */
     public String scanInput() {
         String userInput;
-	System.out.print("User : ");
-	userInput = this.scanner.nextLine();
-	this.userInputHistory.add(userInput);
-	
-	return userInput;
-
+        System.out.print("User : ");
+        userInput = this.scanner.nextLine();
+        this.userInputHistory.add(userInput);
+        return userInput;
     }
 
     /**
-     * Exits the Ui
+     * Exits the Ui.
      */
     public void exitUi() {
-	this.scanner.close();
-	this.exitRequest = true;
+        this.scanner.close();
+        this.exitRequest = true;
     }
 
     /**
@@ -78,21 +78,23 @@ class Ui {
      */
     public static void printGoodbyeMsg() {
         dukeSays("Bye. Hope to see you again soon!");
-	printSeparator();
+        printSeparator();
     }
 
-    /** 
+    /**
      * Decide which Command to do.
      */
-    public static void executeCommand(CommandType commandType, String userInput) {}
+    public static void executeCommand(CommandType commandType, String userInput) {
+    }
 
     // Level 1 - Prints userInput as though Duke is responding
     public static void echoUser(String userInput) {
         dukeSays(userInput);
     }
 
-    /** 
+    /**
      * Helper method to indicate duke is saying something.
+     *
      * @param stringX The message duke wants to say
      */
     public static void dukeSays(String stringX) {
@@ -106,11 +108,11 @@ class Ui {
         System.out.println(LINE);
     }
 
-    /** 
+    /**
      * Prints Welcome Message.
      */
     public static void printWelcomeMsg() {
-	printSeparator();
+        printSeparator();
         System.out.println(LOGO); // Logo
         dukeSays("Hello! I'm Duke.\nDuke: What can I do for you?");
         printSeparator();

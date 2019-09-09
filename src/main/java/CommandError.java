@@ -8,7 +8,7 @@ class CommandError extends Command {
      */
     @Override
     public void execute(TaskList taskList) {
-	Ui.dukeSays("Duke has encountered an error");
-	Ui.printSeparator();
+        Ui.dukeSays("Duke has encountered an error");
+        Ui.printSeparator();
     }
 }

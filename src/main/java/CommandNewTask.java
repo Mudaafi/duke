@@ -5,18 +5,18 @@ class CommandNewTask extends Command {
     // Constructor
     public CommandNewTask(String userInput) {
         this.taskType = Parser.parseTaskType(userInput);
-	this.userInput = userInput;
+        this.userInput = userInput;
     }
 
     @Override
     public void execute(TaskList taskList) {
-	Task newTask = taskList.createTask(this.taskType, this.userInput);
-	taskList.addTask(newTask);
-	Ui.dukeSays("I've added " 
-			+ newTask.genTaskDesc() 
-			+ " to your private list(" 
-			+ String.valueOf(taskList.getSize()) 
-			+ ")."
-			); 
+        Task newTask = taskList.createTask(this.taskType, this.userInput);
+        taskList.addTask(newTask);
+        Ui.dukeSays("I've added "
+                + newTask.genTaskDesc()
+                + " to your private list("
+                + String.valueOf(taskList.getSize())
+                + ")."
+        );
     }
 }
