@@ -1,0 +1,17 @@
+No Previously saved Data.
+________________________________________________
+ ____        _        
+|  _ \ _   _| | _____ 
+| | | | | | | |/ / _ \
+| |_| | |_| |   <  __/
+|____/ \__,_|_|\_\___|
+
+Duke: Hello! I'm Duke.
+Duke: What can I do for you?
+
+________________________________________________
+User : Duke: I've added [✘][P] Test to your private list(1).
+
+User : Duke: I've added [✘][T] yoda tings to your private list(2).
+
+User : 
