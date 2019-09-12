@@ -9,10 +9,15 @@ class Deadline extends Task {
         super(name);
         this.taskType = TaskType.DEADLINE;
         this.recordTaskDetails(name);
-        this.parseDateTime();
+        try {
+            this.parseDateTime();
+        } catch  (DukeException invalidInput) {
+            invalidInput.printStackTrace();
+        }
+
     }
 
-    private void parseDateTime() {
+    private void parseDateTime() throws DukeException{
         SimpleDateFormat formatx = new SimpleDateFormat("dd/mm/yyyy HHmm");
         if (this.detailDesc == null) {
             return;
@@ -22,8 +27,9 @@ class Deadline extends Task {
                 this.datetime = formatx.parse(this.taskDetails);
                 System.out.println("Date Interpreted: " + formatx.format(this.datetime));
             } catch (Exception e) {
-                System.out.println("Invalid Input. Unable to interpret Datetime (use: dd/mm/yyyy HHmm)");
+                //System.out.println("Invalid Input. Unable to interpret Datetime (use: dd/mm/yyyy HHmm)");
                 this.datetime = new Date();
+                throw new DukeException("Invalid Input. Unable to interpret Datetime (use: dd/mm/yyyy HHmm)");
             }
         }
     }
