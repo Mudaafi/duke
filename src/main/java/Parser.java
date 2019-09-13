@@ -124,7 +124,7 @@ class Parser {
     }
 
     /**
-     * Parses the user input for the task description given the Task Type
+     * Parses the user input for the task description given the Task Type.
      * @param taskType TaskType enumeration
      * @param userInput User Input to parse
      * @return String[3] that contains taskName, detailDesc and taskDetails.

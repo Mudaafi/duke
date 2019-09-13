@@ -17,7 +17,7 @@ class Deadline extends Task {
 
     }
 
-    private void parseDateTime() throws DukeException{
+    private void parseDateTime() throws DukeException {
         SimpleDateFormat formatx = new SimpleDateFormat("dd/mm/yyyy HHmm");
         if (this.detailDesc == null) {
             return;
